@@ -41,13 +41,12 @@ export default function SiteHeader() {
 
   // Close mobile menu on path changes
   useEffect(() => {
-    if (mobileOpen) {
-      setTimeout(() => setMobileOpen(false), 0);
-    }
-    if (mobileDropdownOpen) {
-      setTimeout(() => setMobileDropdownOpen(false), 0);
-    }
-  }, [pathname, mobileOpen, mobileDropdownOpen]);
+    const timer = setTimeout(() => {
+      setMobileOpen(false);
+      setMobileDropdownOpen(false);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [pathname]);
 
   return (
     <>

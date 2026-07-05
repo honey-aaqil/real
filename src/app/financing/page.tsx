@@ -70,7 +70,7 @@ export default function FinancingPage() {
       {/* ═══ USDA SPOTLIGHT ═══ */}
       <section id="usda" className="section section-alt">
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center" }}>
+          <div className="grid-2" style={{ alignItems: "center" }}>
             <div>
               <div className="badge badge-primary" style={{ marginBottom: "1rem" }}>Zero Down Payment</div>
               <h2>USDA Rural Development Eligibility</h2>

@@ -121,7 +121,7 @@ export default function RelocationPage() {
             <p>From energetic urban suburbs to quiet lake towns, explore our 6 target cities.</p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "2rem" }}>
+          <div className="grid-cities">
             {cities.map((city) => (
               <div
                 key={city.slug}
@@ -158,7 +158,7 @@ export default function RelocationPage() {
       {/* ═══ PILLARS OF NC RELOCATION ═══ */}
       <section className="section">
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "3rem", alignItems: "center" }}>
+          <div className="grid-2" style={{ alignItems: "center" }}>
             <div>
               <div className="badge badge-accent" style={{ marginBottom: "1rem" }}>Lake Norman & Charlotte</div>
               <h2>Natural Beauty Meets Metro Amenities</h2>

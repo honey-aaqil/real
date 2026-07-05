@@ -2083,6 +2083,7 @@ body::after {
   display: flex;
   width: max-content;
   animation: marquee-scroll var(--marquee-duration, 36s) linear infinite;
+  will-change: transform;
 }
 
 .marquee-row {
@@ -2097,7 +2098,7 @@ body::after {
   font-family: var(--font-heading);
   font-size: clamp(1.25rem, 2.6vw, 2rem);
   font-weight: 400;
-  color: rgba(242, 239, 232, 0.55);
+  color: var(--clr-navy);
   white-space: nowrap;
 }
 
@@ -2109,7 +2110,7 @@ body::after {
   color: var(--clr-primary);
   font-size: 0.55em;
   margin: 0 1.75rem;
-  opacity: 0.8;
+  opacity: 1;
 }
 
 @keyframes marquee-scroll {
@@ -2140,18 +2141,20 @@ body::after {
 }
 
 .cinema-hero-video {
-  width: 100%;
-  height: 100%;
+  width: 108%;
+  height: 108%;
+  position: absolute;
+  top: -4%;
+  left: -4%;
   object-fit: cover;
   transform-origin: center;
+  filter: brightness(1.15) contrast(1.05) saturate(1.05); /* Hardware-accelerated bright and vibrant enhancement */
 }
 
 .cinema-hero-veil {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 90% 70% at 50% 100%, rgba(10,10,11,0.55) 0%, transparent 55%),
-    linear-gradient(180deg, rgba(10,10,11,0.72) 0%, rgba(10,10,11,0.35) 45%, rgba(10,10,11,0.88) 100%);
+  pointer-events: none;
 }
 
 .cinema-hero-content {
@@ -2164,12 +2167,13 @@ body::after {
 }
 
 .cinema-eyebrow {
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.28em;
-  color: var(--clr-primary-light);
+  letter-spacing: 0.3em;
+  color: #FFF1C5; /* Ultra-bright soft gold */
   margin-bottom: 1.75rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.65); /* Drop shadow for maximum legibility */
 }
 
 .cinema-title {
@@ -2177,30 +2181,66 @@ body::after {
   font-size: clamp(2.75rem, 7.2vw, 5.5rem);
   font-weight: 400;
   line-height: 1.04;
-  color: var(--clr-white);
+  color: #FFFFFF; /* Pure bright white */
   letter-spacing: 0.005em;
   margin-bottom: 1.75rem;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.7); /* Deep drop shadow for maximum contrast */
 }
 
 .cinema-title em {
   font-style: italic;
-  color: var(--clr-accent-light);
+  color: #FFECA1; /* Brilliant shimmering gold */
+  text-shadow: 0 0 24px rgba(201,169,97,0.35); /* Neon title glow */
 }
 
 .cinema-sub {
   font-size: 1.0625rem;
-  font-weight: 300;
-  color: rgba(242, 239, 232, 0.78);
+  font-weight: 400;
+  color: #F5F4F0; /* Solid warm bright white, no transparency! */
   max-width: 640px;
   margin: 0 auto 2.5rem;
   line-height: 1.8;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.65); /* Drop shadow for perfect readability */
 }
 
 .cinema-actions {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+/* ─── Unique Luxury Cinema Button Overrides ─── */
+.cinema-actions .btn-primary {
+  background: linear-gradient(135deg, #FFECA1 0%, #E2C88A 50%, #C9A961 100%) !important; /* Shimmering gold gradient */
+  color: #0C0C0D !important; /* Deep contrast black-charcoal text */
+  font-weight: 600 !important;
+  border: none !important;
+  box-shadow: 0 4px 20px rgba(226, 200, 138, 0.45) !important; /* Shimmering golden glow aura */
+  transition: all var(--transition-base) !important;
+}
+
+.cinema-actions .btn-primary:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 8px 30px rgba(226, 200, 138, 0.65) !important; /* Intense hovering glow */
+}
+
+.cinema-actions .btn-outline {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: #FFFFFF !important; /* Pure bright white text */
+  border: 1px dashed rgba(226, 200, 138, 0.55) !important; /* Unique dashed gold hairline border! */
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  font-weight: 500 !important;
+  transition: all var(--transition-base) !important;
+}
+
+.cinema-actions .btn-outline:hover {
+  background: #FFFFFF !important; /* Turns solid bright white on hover */
+  color: #0C0C0D !important; /* Solid high-contrast text */
+  border: 1px solid #FFFFFF !important;
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25) !important;
 }
 
 .cinema-hero-foot {
@@ -2372,13 +2412,38 @@ body::after {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1), filter 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1), filter 900ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms ease;
   filter: saturate(0.85) contrast(1.02);
 }
 
 .card:hover .card-image-frame img {
   transform: scale(1.07);
   filter: saturate(1) contrast(1.05);
+}
+
+/* ─── Instagram-style blur-up: shimmer while the image decodes, fade in on load ─── */
+.image-skeleton {
+  background: linear-gradient(100deg, #17181b 30%, #232428 50%, #17181b 70%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+.image-skeleton img {
+  opacity: 0;
+}
+
+.image-skeleton.is-loaded {
+  animation: none;
+  background: none;
+}
+
+.image-skeleton.is-loaded img {
+  opacity: 1;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 .card-image-frame::after {
@@ -2445,4 +2510,70 @@ body::after {
 
 .section-header-center .section-index::after {
   display: none;
+}
+
+/* ─── Mobile Optimization & Responsiveness Enhancements ─── */
+
+/* 1. Responsive split helper for auto columns (Incentives card) */
+.responsive-split-auto {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+/* 2. Contact page split layout */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 4rem;
+}
+
+/* 3. Mobile adjustments on screens <= 992px */
+@media (max-width: 992px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+/* 4. Mobile adjustments on screens <= 768px */
+@media (max-width: 768px) {
+  .responsive-split-auto {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    text-align: center;
+  }
+  .responsive-split-auto .btn {
+    width: 100%;
+  }
+  .lead-form-card {
+    padding: var(--space-lg); /* Reduce massive padding */
+  }
+  .cinema-hero-content {
+    padding: 6.5rem var(--space-md) 1.5rem; /* Reduces clipping and keeps marquee visible on tablets */
+  }
+}
+
+/* 5. Mobile adjustments on screens <= 480px */
+@media (max-width: 480px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+  .lead-form-card {
+    padding: var(--space-md); /* Minimize padding further on tiny phones */
+  }
+  .featured-scroll > * {
+    flex: 0 0 280px; /* Carousel cards fit nicely on 320px screens */
+  }
+  .header-inner {
+    padding: 0 var(--space-md); /* Responsive header breathing room */
+  }
+  .cinema-hero-content {
+    padding: 4.75rem var(--space-md) 1rem; /* Highly optimized padding on mobile phones to fit 100svh bounds */
+  }
+  .cinema-sub {
+    margin-bottom: 1.5rem; /* Less margin to prevent vertical overflow */
+  }
 }

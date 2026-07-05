@@ -16,6 +16,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import Marquee from "@/components/motion/Marquee";
+import CuriosityGapApertureLoop from "@/components/motion/CuriosityGapApertureLoop";
 import { getFeaturedCommunities } from "@/data/communities";
 import CommunityCard from "@/components/CommunityCard";
 
@@ -55,6 +56,31 @@ export default function HomePage() {
   const heroVideoRef = useRef<HTMLVideoElement>(null);
 
   useGSAP(() => {
+    /* Data-saver / slow connections never get the hero video — the dark
+       veil gradient already gives full visual coverage without it. */
+    const nav = navigator as Navigator & {
+      connection?: { saveData?: boolean; effectiveType?: string };
+    };
+    const conn = nav.connection;
+    const isSlowConnection =
+      conn?.saveData || ["slow-2g", "2g", "3g"].includes(conn?.effectiveType ?? "");
+
+    if (heroVideoRef.current && !isSlowConnection) {
+      const video = heroVideoRef.current;
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            video.src = "/images/hero/lakenorman.mp4";
+            video.load();
+            video.play().catch(() => {});
+            io.disconnect();
+          }
+        },
+        { rootMargin: "0px" }
+      );
+      io.observe(video);
+    }
+
     const mm = gsap.matchMedia();
 
     /* Hero film: slow push-in while scrolling away + content drift */
@@ -113,12 +139,10 @@ export default function HomePage() {
           <video
             ref={heroVideoRef}
             className="cinema-hero-video"
-            src="/images/hero/lakenorman.mp4"
-            autoPlay
             muted
             loop
             playsInline
-            preload="auto"
+            preload="none"
             aria-hidden="true"
           />
           <div className="cinema-hero-veil" />
@@ -147,8 +171,6 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-
-        <div className="scroll-cue">Scroll</div>
 
         <div className="cinema-hero-foot">
           <Marquee items={marqueeTowns} speed={42} />
@@ -200,26 +222,7 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid-cities" style={{ marginTop: "2rem" }}>
-            {towns.map((town) => (
-              <Link
-                key={town.slug}
-                href={`/new-homes/${town.slug}/`}
-                className="town-card-editorial"
-              >
-                <div
-                  className="town-card-bg"
-                  style={{
-                    backgroundImage: `linear-gradient(rgba(12,12,13,0.1), rgba(9,9,10,0.9)), radial-gradient(circle at top right, rgba(201,169,97,0.18), transparent)`,
-                    backgroundColor: "#15161A",
-                  }}
-                />
-                <div className="town-card-content" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%", padding: 0 }}>
-                  <h4 className="town-card-name" style={{ fontSize: "1.375rem", textAlign: "center", margin: 0, letterSpacing: "0.02em" }}>{town.name}</h4>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <CuriosityGapApertureLoop />
         </div>
       </section>
 
@@ -244,13 +247,14 @@ export default function HomePage() {
                 community={community}
                 citySlug={community.citySlug}
                 image={featuredImages[i % featuredImages.length]}
+                priority={i === 0}
               />
             ))}
           </div>
 
           {/* Dynamic Incentives Block */}
           <div className="luxury-border-glow" data-reveal style={{ borderRadius: "var(--radius-xl)", padding: "2.5rem", background: "radial-gradient(ellipse 70% 90% at 85% 10%, rgba(201,169,97,0.12) 0%, transparent 60%), linear-gradient(135deg, #16171A 0%, #0E0E10 100%)" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "2.5rem", alignItems: "center" }}>
+            <div className="responsive-split-auto">
               <div>
                 <span className="badge badge-accent" style={{ marginBottom: "1rem" }}>
                   Current Builder Promotions

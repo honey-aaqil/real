@@ -30,7 +30,7 @@ export default function ContactPage() {
 
       <section className="section">
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: "4rem" }}>
+          <div className="contact-grid">
             
             {/* Form Column */}
             <div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Bed, Bath, Ruler, ArrowRight } from "lucide-react";
 import type { Community } from "@/data/communities";
 
@@ -7,9 +8,11 @@ interface CommunityCardProps {
   citySlug: string;
   /** Optional photograph — rendered with the cinematic zoom/grade treatment */
   image?: string;
+  /** First cards above the fold get eager/high-priority loading */
+  priority?: boolean;
 }
 
-export default function CommunityCard({ community, citySlug, image }: CommunityCardProps) {
+export default function CommunityCard({ community, citySlug, image, priority }: CommunityCardProps) {
   return (
     <Link
       href={`/new-homes/${citySlug}/${community.slug}`}
@@ -17,8 +20,15 @@ export default function CommunityCard({ community, citySlug, image }: CommunityC
       style={{ textDecoration: "none", display: "block" }}
     >
       {image ? (
-        <div className="card-image-frame">
-          <img src={image} alt={`${community.name} — new construction home`} loading="lazy" />
+        <div className="card-image-frame image-skeleton">
+          <Image
+            src={image}
+            alt={`${community.name} — new construction home`}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            priority={priority}
+            onLoad={(e) => e.currentTarget.parentElement?.classList.add("is-loaded")}
+          />
           {community.usdaEligible && (
             <span className="badge badge-usda card-image-badge">USDA Eligible</span>
           )}

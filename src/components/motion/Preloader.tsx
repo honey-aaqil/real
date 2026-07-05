@@ -22,6 +22,12 @@ export default function Preloader() {
 
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const seen = sessionStorage.getItem("sp-intro-seen");
+      const nav = navigator as Navigator & {
+        connection?: { saveData?: boolean; effectiveType?: string };
+      };
+      const conn = nav.connection;
+      const isSlowConnection =
+        conn?.saveData || ["slow-2g", "2g", "3g"].includes(conn?.effectiveType ?? "");
       document.documentElement.style.overflow = "hidden";
 
       const finish = () => {
@@ -29,7 +35,7 @@ export default function Preloader() {
         setDone(true);
       };
 
-      if (seen || reduced) {
+      if (seen || reduced || isSlowConnection) {
         gsap.to(root, { autoAlpha: 0, duration: 0.5, ease: "power2.inOut", onComplete: finish });
         return;
       }

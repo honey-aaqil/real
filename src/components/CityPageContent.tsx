@@ -130,7 +130,7 @@ export default function CityPageContent({ citySlug }: CityPageContentProps) {
       {/* INTERNAL LINKS */}
       <section className="section">
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
+          <div className="grid-2">
             <div>
               <h3 style={{ marginBottom: "1rem" }}>Explore More</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>

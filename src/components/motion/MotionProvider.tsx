@@ -5,11 +5,10 @@ import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { SplitText } from "gsap/SplitText";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollSmoother, SplitText, ScrambleTextPlugin);
+gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, ScrambleTextPlugin);
 
 /**
  * Global motion engine. Wraps all scrollable content and provides:
@@ -27,23 +26,45 @@ export default function MotionProvider({ children }: { children: React.ReactNode
 
   useGSAP(
     () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        // Set counters immediately to their end values
+        document.querySelectorAll<HTMLElement>("[data-count]").forEach((el) => {
+          const end = parseFloat(el.dataset.count || "0");
+          const decimals = parseInt(el.dataset.countDecimals || "0", 10);
+          const prefix = el.dataset.countPrefix || "";
+          const suffix = el.dataset.countSuffix || "";
+          el.textContent = prefix + end.toFixed(decimals) + suffix;
+        });
+        // Set scramble text immediately
+        document.querySelectorAll<HTMLElement>("[data-scramble]").forEach((el) => {
+          el.textContent = el.dataset.scrambleText || el.textContent || "";
+        });
+        return;
+      }
       document.documentElement.classList.add("motion-ready");
 
       const isDesktop = window.matchMedia("(pointer: fine) and (min-width: 1025px)").matches;
 
-      /* ── 1. Buttery smooth scrolling + parallax (desktop only) ── */
-      let smoother: ScrollSmoother | null = null;
-      if (isDesktop && wrapperRef.current && contentRef.current) {
-        smoother = ScrollSmoother.create({
-          wrapper: wrapperRef.current,
-          content: contentRef.current,
-          smooth: 1.1,
-          effects: true,
-          normalizeScroll: true,
-          ignoreMobileResize: true,
-        });
-      }
+      /* ── 1. Buttery smooth scrolling + parallax (desktop only) ──
+         ScrollSmoother is a heavy premium plugin — dynamically imported
+         so mobile clients never download or parse its JS. */
+      let smoother: import("gsap/ScrollSmoother").ScrollSmoother | null = null;
+      let cancelled = false;
+      const smootherReady =
+        isDesktop && wrapperRef.current && contentRef.current
+          ? import("gsap/ScrollSmoother").then(({ ScrollSmoother }) => {
+              if (cancelled || !wrapperRef.current || !contentRef.current) return;
+              gsap.registerPlugin(ScrollSmoother);
+              smoother = ScrollSmoother.create({
+                wrapper: wrapperRef.current,
+                content: contentRef.current,
+                smooth: 1.1,
+                effects: true,
+                normalizeScroll: true,
+                ignoreMobileResize: true,
+              });
+            })
+          : Promise.resolve();
 
       /* ── 2. Hero headline: per-character mask reveal ── */
       document.querySelectorAll<HTMLElement>(".hero-content h1, .cinema-title").forEach((el) => {
@@ -112,34 +133,11 @@ export default function MotionProvider({ children }: { children: React.ReactNode
         });
       });
 
-      /* ── 6. Magnetic buttons (desktop) ── */
-      const magneticCleanups: Array<() => void> = [];
-      if (isDesktop) {
-        document.querySelectorAll<HTMLElement>(".btn").forEach((btn) => {
-          const xTo = gsap.quickTo(btn, "x", { duration: 0.4, ease: "power3.out" });
-          const yTo = gsap.quickTo(btn, "y", { duration: 0.4, ease: "power3.out" });
-          const onMove = (e: MouseEvent) => {
-            const r = btn.getBoundingClientRect();
-            xTo(((e.clientX - r.left) / r.width - 0.5) * 14);
-            yTo(((e.clientY - r.top) / r.height - 0.5) * 10);
-          };
-          const onLeave = () => {
-            xTo(0);
-            yTo(0);
-          };
-          btn.addEventListener("mousemove", onMove);
-          btn.addEventListener("mouseleave", onLeave);
-          magneticCleanups.push(() => {
-            btn.removeEventListener("mousemove", onMove);
-            btn.removeEventListener("mouseleave", onLeave);
-          });
-        });
-      }
-
       ScrollTrigger.refresh();
+      smootherReady.then(() => ScrollTrigger.refresh());
 
       return () => {
-        magneticCleanups.forEach((fn) => fn());
+        cancelled = true;
         smoother?.kill();
       };
     },

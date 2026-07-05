@@ -5,7 +5,6 @@ import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import MotionProvider from "@/components/motion/MotionProvider";
 import Preloader from "@/components/motion/Preloader";
-import CustomCursor from "@/components/motion/CustomCursor";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -63,7 +62,6 @@ export default function RootLayout({
     <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
       <body>
         <Preloader />
-        <CustomCursor />
         <SiteHeader />
 
         {/* Smooth-scroll wrapper: everything that scrolls lives inside */}

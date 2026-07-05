@@ -143,7 +143,7 @@ export default function CommunityPageContent({ city, community }: CommunityPageC
       {/* SCHOOLS / COMMUTE */}
       <section className="section section-alt">
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem" }}>
+          <div className="grid-2">
             <div className="info-card">
               <h4><GraduationCap size={16} style={{ display: "inline", verticalAlign: "middle", marginRight: 8 }} />Nearby Schools</h4>
               <ul>
