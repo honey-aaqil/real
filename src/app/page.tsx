@@ -56,14 +56,14 @@ export default function HomePage() {
   const heroVideoRef = useRef<HTMLVideoElement>(null);
 
   useGSAP(() => {
-    /* Data-saver / slow connections never get the hero video — the dark
-       veil gradient already gives full visual coverage without it. */
+    /* Only genuinely poor connections skip the hero video — Chrome's Data
+       Saver toggle is extremely common on Android even on fast Wi-Fi/LTE,
+       so we don't treat `saveData` alone as a reason to withhold it. */
     const nav = navigator as Navigator & {
-      connection?: { saveData?: boolean; effectiveType?: string };
+      connection?: { effectiveType?: string };
     };
     const conn = nav.connection;
-    const isSlowConnection =
-      conn?.saveData || ["slow-2g", "2g", "3g"].includes(conn?.effectiveType ?? "");
+    const isSlowConnection = ["slow-2g", "2g"].includes(conn?.effectiveType ?? "");
 
     if (heroVideoRef.current && !isSlowConnection) {
       const video = heroVideoRef.current;

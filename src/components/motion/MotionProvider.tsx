@@ -78,12 +78,20 @@ export default function MotionProvider({ children }: { children: React.ReactNode
           delay: 0.15,
         });
       });
-      gsap.from(".hero-content p, .hero-content .btn, .hero-content .hero-badge, .cinema-sub, .cinema-actions", {
+      gsap.from(".hero-content p, .hero-content .btn, .hero-content .hero-badge, .cinema-sub", {
         y: 32,
         autoAlpha: 0,
         duration: 1.1,
         stagger: 0.09,
         delay: 0.55,
+        ease: "power3.out",
+        clearProps: "all",
+      });
+      /* No entrance delay for the CTA row — it should be interactive immediately */
+      gsap.from(".cinema-actions", {
+        y: 32,
+        autoAlpha: 0,
+        duration: 1.1,
         ease: "power3.out",
         clearProps: "all",
       });
