@@ -34,7 +34,7 @@ export default function CityPageContent({ citySlug }: CityPageContentProps) {
       <SchemaMarkup
         type="LocalBusiness"
         data={{
-          name: `D.R. Horton Homes — ${city.name}, NC`,
+          name: `D.R. Horton Homes — ${city.name}`,
           description: city.heroDescription,
           url: `https://drhorton-nc-homes.com/new-homes/${city.slug}`,
           address: {
@@ -50,7 +50,7 @@ export default function CityPageContent({ citySlug }: CityPageContentProps) {
       <HeroSection
         heroClass={heroClasses[city.slug]}
         badge={`${city.communityCount} ${city.communityCount === 1 ? "Community" : "Communities"} • Starting from ${city.startingPrice}`}
-        title={`New Homes in ${city.name}, NC by D.R. Horton`}
+        title={`New Homes in ${city.name} by D.R. Horton`}
         subtitle={city.heroDescription}
       >
         <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
@@ -68,7 +68,7 @@ export default function CityPageContent({ citySlug }: CityPageContentProps) {
         <div className="container">
           <div className="section-header">
             <div className="badge badge-primary" style={{ marginBottom: "1rem" }}>🏡 Relocation Guide</div>
-            <h2>Why Move to {city.name}, NC?</h2>
+            <h2>Why Move to {city.name}?</h2>
             <p>Key facts for out-of-state buyers considering {city.name}.</p>
           </div>
           <div className="highlight-list">
@@ -152,7 +152,7 @@ export default function CityPageContent({ citySlug }: CityPageContentProps) {
                   const name = slug.replace("-nc", "").split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
                   return (
                     <Link key={slug} href={`/new-homes/${slug}`} style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--clr-primary)", fontWeight: 500 }}>
-                      <ArrowRight size={14} /> New Homes in {name}, NC
+                      <ArrowRight size={14} /> New Homes in {name}
                     </Link>
                   );
                 })}

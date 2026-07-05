@@ -19,7 +19,7 @@ export default function CommunityPageContent({ city, community }: CommunityPageC
       <SchemaMarkup
         type="RealEstateListing"
         data={{
-          name: `${community.name} — ${city.name}, NC`,
+          name: `${community.name} — ${city.name}`,
           description: community.hookLine,
           url: `https://drhorton-nc-homes.com/new-homes/${city.slug}/${community.slug}`,
           address: {
@@ -43,7 +43,7 @@ export default function CommunityPageContent({ city, community }: CommunityPageC
           items={[
             { label: "Home", href: "/" },
             { label: "New Homes", href: "/new-homes" },
-            { label: `${city.name}, NC`, href: `/new-homes/${city.slug}` },
+            { label: city.name, href: `/new-homes/${city.slug}` },
             { label: community.name },
           ]}
         />
@@ -58,7 +58,7 @@ export default function CommunityPageContent({ city, community }: CommunityPageC
         <div className="hero-content">
           <div className="hero-badge">
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "currentColor" }} />
-            {city.name}, NC
+            {city.name}
           </div>
           <h1>{community.name}</h1>
           <p style={{ fontSize: "1.5rem", fontWeight: 600, color: "var(--clr-accent-light)", marginBottom: "0.25rem" }}>
@@ -134,7 +134,7 @@ export default function CommunityPageContent({ city, community }: CommunityPageC
           <LeadCaptureForm
             source={`community-${city.slug}-${community.slug}`}
             title="Request Floorplans & Pricing"
-            subtitle={`Get detailed floorplans, current pricing, and available incentives for ${community.name} in ${city.name}, NC.`}
+            subtitle={`Get detailed floorplans, current pricing, and available incentives for ${community.name} in ${city.name}.`}
             showCommunityField={false}
           />
         </div>

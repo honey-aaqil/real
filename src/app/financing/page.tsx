@@ -93,10 +93,10 @@ export default function FinancingPage() {
               </ul>
               <h4 style={{ marginBottom: "0.5rem" }}>USDA Eligible Communities:</h4>
               <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                <span className="badge badge-accent">Blackstone Bay (Sherrills Ford, NC)</span>
-                <span className="badge badge-accent">Enclave at Falls Cove (Troutman, NC)</span>
-                <span className="badge badge-accent">Calvin Creek (Troutman, NC)</span>
-                <span className="badge badge-accent">Brookside (Troutman, NC)</span>
+                <span className="badge badge-accent">Blackstone Bay (Sherrills Ford)</span>
+                <span className="badge badge-accent">Enclave at Falls Cove (Troutman)</span>
+                <span className="badge badge-accent">Calvin Creek (Troutman)</span>
+                <span className="badge badge-accent">Brookside (Troutman)</span>
               </div>
             </div>
             <div

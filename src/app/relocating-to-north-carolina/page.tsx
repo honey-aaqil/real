@@ -136,7 +136,7 @@ export default function RelocationPage() {
                 }}
               >
                 <div style={{ padding: "2rem", flexGrow: 1 }}>
-                  <h3 style={{ fontSize: "1.25rem", color: "var(--clr-primary)", marginBottom: "0.5rem" }}>{city.name}, NC</h3>
+                  <h3 style={{ fontSize: "1.25rem", color: "var(--clr-primary)", marginBottom: "0.5rem" }}>{city.name}</h3>
                   <p style={{ fontSize: "0.875rem", color: "var(--clr-gray-500)", marginBottom: "1rem" }}>
                     Starting from <strong style={{ color: "var(--clr-primary)" }}>{city.startingPrice}</strong> • {city.communityCount} {city.communityCount === 1 ? "Community" : "Communities"}
                   </p>

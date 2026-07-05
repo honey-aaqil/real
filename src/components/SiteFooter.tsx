@@ -37,7 +37,7 @@ export default function SiteFooter() {
               <Mail size={14} className="text-[#C5A059]" /> info@drhorton-nc-homes.com
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "0.625rem", fontSize: "0.8125rem", color: "var(--clr-gray-300)" }}>
-              <MapPin size={14} className="text-[#C5A059]" /> Greater Charlotte & Lake Norman Region, NC
+              <MapPin size={14} className="text-[#C5A059]" /> Greater Charlotte & Lake Norman Region
             </span>
           </div>
         </div>
@@ -52,7 +52,7 @@ export default function SiteFooter() {
                 href={town.active ? `/new-homes/${town.slug}/` : `/contact/?inquiry=dr-horton-${town.slug}`}
                 style={{ fontSize: "0.8125rem" }}
               >
-                {town.name}, NC
+                {town.name}
               </Link>
             ))}
           </div>

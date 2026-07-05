@@ -5,11 +5,13 @@ import { useRef, useState } from "react";
 import {
   ArrowRight,
   Compass,
-  Star,
   BookOpen,
   Calendar,
   Phone,
   MessageCircle,
+  Percent,
+  ShieldCheck,
+  TrendingDown,
 } from "lucide-react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -17,8 +19,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import Marquee from "@/components/motion/Marquee";
 import CuriosityGapApertureLoop from "@/components/motion/CuriosityGapApertureLoop";
+import TestimonialCarousel3D from "@/components/TestimonialCarousel3D";
+import CommunityTriptych from "@/components/CommunityTriptych";
 import { getFeaturedCommunities } from "@/data/communities";
-import CommunityCard from "@/components/CommunityCard";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -209,11 +212,47 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══ SECTION 1: WHY WORK WITH US ═══ */}
+      <section className="section-luxury-padding section-alt" style={{ borderBottom: "1px solid var(--clr-gray-200)" }}>
+        <div className="container">
+          <div className="grid-2" style={{ alignItems: "center", gap: "var(--space-2xl)" }}>
+            {/* Left Column: Bold Editorial Visual Pull-Quote */}
+            <div style={{ borderLeft: "2px solid var(--clr-accent)", paddingLeft: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <p style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(1.5rem, 3vw, 2rem)", color: "var(--clr-white)", fontStyle: "italic", lineHeight: "1.3" }}>
+                &quot;The on-site agent works for the builder. We work for you. Same house, same price ceiling — a very different outcome.&quot;
+              </p>
+              <p style={{ fontSize: "0.8125rem", color: "var(--clr-accent)", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.12em" }}>
+                — Independent Advocacy Principle
+              </p>
+            </div>
+
+            {/* Right Column: Detailed Editorial Copy */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <div className="section-index">01 — Why DR Horton</div>
+              <h2 className="luxury-title-glow" style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", lineHeight: "1.2", marginTop: "0.25rem" }}>
+                Why Buyers Work With Us Instead of the Builder&apos;s On-Site Agent
+              </h2>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem", color: "var(--clr-gray-300)", fontSize: "0.9375rem", lineHeight: "1.75" }}>
+                <p>
+                  When you walk into a D.R. Horton community, the smiling agent at the model home works for D.R. Horton. Their job is to get the builder the best deal — not you. They&apos;re not going to tell you which upgrades are overpriced, which incentives you could be negotiating harder for, or what similar buyers in that same community paid last month.
+                </p>
+                <p style={{ fontSize: "1.25rem", fontWeight: "700", color: "var(--clr-accent)", fontFamily: "var(--font-heading)", margin: "0.25rem 0" }}>
+                  We do.
+                </p>
+                <p>
+                  We represent you inside D.R. Horton communities — reviewing your contract, pushing on closing-cost credits and upgrade pricing, and flagging anything that favors the builder over you. And because D.R. Horton pays buyer-agent commissions as part of their standard process, this costs you nothing. You get an advocate in a room that was built without one, at no cost to add one.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ TOWN SELECTOR GRID ═══ */}
       <section id="selector-grid" className="section-luxury-padding">
         <div className="container">
           <div className="section-header section-header-center">
-            <div className="section-index">01 — The Markets</div>
+            <div className="section-index">02 — The Markets</div>
             <h2 className="luxury-title-glow" style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)" }}>
               Select Your Target Market
             </h2>
@@ -226,12 +265,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══ FEATURED COMMUNITIES — STANDARD LUXURY GRID ═══ */}
+      {/* ═══ FEATURED COMMUNITIES — SMOOTH CAROUSEL ═══ */}
       <section className="section section-alt" style={{ borderTop: "1px solid var(--clr-gray-200)" }}>
         <div className="container">
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "var(--space-2xl)", flexWrap: "wrap", gap: "1rem" }}>
             <div>
-              <div className="section-index">02 — Communities</div>
+              <div className="section-index">03 — Communities</div>
               <h2 style={{ fontSize: "clamp(2rem, 4vw, 2.5rem)", marginTop: "0.25rem" }}>Featured Communities</h2>
               <p style={{ marginTop: "0.5rem" }}>Handpicked neighborhoods offering exceptional value, incentives, and schools.</p>
             </div>
@@ -240,35 +279,118 @@ export default function HomePage() {
             </Link>
           </div>
 
-          <div className="grid-3" style={{ marginBottom: "var(--space-3xl)" }}>
-            {featured.map((community, i) => (
-              <CommunityCard
-                key={community.slug}
-                community={community}
-                citySlug={community.citySlug}
-                image={featuredImages[i % featuredImages.length]}
-                priority={i === 0}
-              />
-            ))}
-          </div>
+          <CommunityTriptych items={featured} images={featuredImages} />
 
           {/* Dynamic Incentives Block */}
-          <div className="luxury-border-glow" data-reveal style={{ borderRadius: "var(--radius-xl)", padding: "2.5rem", background: "radial-gradient(ellipse 70% 90% at 85% 10%, rgba(201,169,97,0.12) 0%, transparent 60%), linear-gradient(135deg, #16171A 0%, #0E0E10 100%)" }}>
-            <div className="responsive-split-auto">
-              <div>
-                <span className="badge badge-accent" style={{ marginBottom: "1rem" }}>
-                  Current Builder Promotions
-                </span>
-                <h3 style={{ fontSize: "1.5rem", marginBottom: "0.5rem", color: "var(--clr-white)" }}>
-                  D.R. Horton Live Financial Incentives
-                </h3>
-                <p style={{ fontSize: "0.9375rem" }}>
-                  This month features competitive 30-year fixed rate lock programs via DHI Mortgage, plus up to $10,000 in closing cost assistance on select move-in ready homes. USDA zero-down programs available in eligible exurban neighborhoods.
-                </p>
+          <div 
+            className="luxury-border-glow" 
+            data-reveal 
+            style={{ 
+              borderRadius: "var(--radius-xl)", 
+              background: "radial-gradient(ellipse 80% 80% at 100% 0%, rgba(201,169,97,0.08) 0%, transparent 60%), linear-gradient(145deg, #121315 0%, #08090A 100%)",
+              overflow: "hidden",
+              position: "relative"
+            }}
+          >
+            {/* Elegant Top-Right Gold Accent Keyline */}
+            <div className="luxury-glow-keyline luxury-glow-keyline-h" />
+            <div className="luxury-glow-keyline luxury-glow-keyline-v" />
+
+            <div className="luxury-incentives-grid">
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem", minWidth: 0 }}>
+                <div>
+                  <span className="badge badge-accent" style={{ marginBottom: "0.5rem", letterSpacing: "clamp(0.06em, 1.2vw, 0.12em)", textTransform: "uppercase", fontSize: "clamp(0.625rem, 2.6vw, 0.75rem)", padding: "clamp(0.3rem, 1.4vw, 0.35rem) clamp(0.6rem, 3vw, 0.85rem)" }}>
+                    Current Builder Promotions
+                  </span>
+                  <h3 style={{ fontSize: "clamp(1.5rem, 5.5vw, 2.25rem)", color: "var(--clr-white)", fontFamily: "var(--font-heading)", lineHeight: "1.25", marginTop: "0.25rem" }}>
+                    D.R. Horton Live <span style={{ color: "var(--clr-accent)" }}>Financial Incentives</span>
+                  </h3>
+                  <p style={{ fontSize: "clamp(0.8125rem, 3.2vw, 0.9375rem)", color: "var(--clr-gray-300)", lineHeight: "1.7", marginTop: "0.5rem" }}>
+                    This month features competitive 30-year fixed rate lock programs via DHI Mortgage, plus up to $10,000 in closing cost assistance on select move-in ready homes. USDA zero-down programs available in eligible exurban neighborhoods.
+                  </p>
+                </div>
+
+                {/* Mobile-Only Horizontal Stats Capsule */}
+                <div className="mobile-stats-bar">
+                  <div className="mobile-stat-item">
+                    <div className="mobile-stat-val">5.49%</div>
+                    <div className="mobile-stat-lbl">30-Yr Fixed</div>
+                  </div>
+                  <div className="mobile-stat-item">
+                    <div className="mobile-stat-val">$10K</div>
+                    <div className="mobile-stat-lbl">Closing Aid</div>
+                  </div>
+                  <div className="mobile-stat-item">
+                    <div className="mobile-stat-val">$0 Down</div>
+                    <div className="mobile-stat-lbl">USDA areas</div>
+                  </div>
+                </div>
+
+                {/* Mobile-Only CTA Button */}
+                <div className="mobile-only" style={{ marginTop: "0.25rem" }}>
+                  <Link href="/financing" className="btn btn-accent btn-lg" style={{ textAlign: "center", display: "block", width: "100%" }}>
+                    Request Rate Concessions <ArrowRight size={14} style={{ marginLeft: "4px", display: "inline-block", verticalAlign: "middle" }} />
+                  </Link>
+                </div>
+
+                {/* Micro-Infographic Stats Grid (Desktop Only) */}
+                <div className="micro-stats-grid">
+                  <div style={{ border: "1px solid rgba(201, 169, 97, 0.12)", borderRadius: "var(--radius-lg)", padding: "0.75rem", background: "rgba(18, 19, 22, 0.4)", backdropFilter: "blur(8px)" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--clr-accent)", marginBottom: "0.25rem" }}>
+                      <TrendingDown size={14} />
+                      <span style={{ fontSize: "0.6875rem", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--clr-gray-400)" }}>Promo Rate</span>
+                    </div>
+                    <div style={{ fontSize: "1.75rem", fontWeight: "700", color: "var(--clr-white)", fontFamily: "var(--font-heading)" }}>5.49%</div>
+                    <div style={{ fontSize: "0.6875rem", color: "var(--clr-gray-400)", marginTop: "0px" }}>30-Yr Fixed Lock</div>
+                  </div>
+
+                  <div style={{ border: "1px solid rgba(201, 169, 97, 0.12)", borderRadius: "var(--radius-lg)", padding: "0.75rem", background: "rgba(18, 19, 22, 0.4)", backdropFilter: "blur(8px)" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--clr-accent)", marginBottom: "0.25rem" }}>
+                      <Percent size={14} />
+                      <span style={{ fontSize: "0.6875rem", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--clr-gray-400)" }}>Closing Aid</span>
+                    </div>
+                    <div style={{ fontSize: "1.75rem", fontWeight: "700", color: "var(--clr-white)", fontFamily: "var(--font-heading)" }}>$10K</div>
+                    <div style={{ fontSize: "0.6875rem", color: "var(--clr-gray-400)", marginTop: "0px" }}>Select Quick Move-Ins</div>
+                  </div>
+
+                  <div style={{ border: "1px solid rgba(201, 169, 97, 0.12)", borderRadius: "var(--radius-lg)", padding: "0.75rem", background: "rgba(18, 19, 22, 0.4)", backdropFilter: "blur(8px)" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--clr-accent)", marginBottom: "0.25rem" }}>
+                      <ShieldCheck size={14} />
+                      <span style={{ fontSize: "0.6875rem", fontWeight: "600", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--clr-gray-400)" }}>Exurban</span>
+                    </div>
+                    <div style={{ fontSize: "1.75rem", fontWeight: "700", color: "var(--clr-white)", fontFamily: "var(--font-heading)" }}>$0 Down</div>
+                    <div style={{ fontSize: "0.6875rem", color: "var(--clr-gray-400)", marginTop: "0px" }}>USDA Qualifying Areas</div>
+                  </div>
+                </div>
               </div>
-              <div>
-                <Link href="/financing" className="btn btn-accent btn-lg">
-                  Request Rate Concessions
+
+              {/* Sophisticated CTA Panel */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.875rem", padding: "1.25rem", borderRadius: "var(--radius-lg)", border: "1px solid rgba(201, 169, 97, 0.15)", background: "rgba(18, 18, 22, 0.55)", backdropFilter: "blur(12px)", position: "relative" }}>
+                {/* Micro-glow beneath the button */}
+                <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "120px", height: "120px", background: "rgba(201, 169, 97, 0.04)", borderRadius: "100%", filter: "blur(40px)", pointerEvents: "none" }} />
+                
+                <h4 style={{ fontSize: "1.125rem", color: "var(--clr-white)", fontWeight: "500" }}>Incentive Advocacy Program</h4>
+                <p style={{ fontSize: "0.8125rem", color: "var(--clr-gray-300)", lineHeight: "1.5" }}>
+                  Don&apos;t walk into builder negotiations unrepresented. Our team provides 100% free buyer advocacy to secure maximum concessions and lock programs.
+                </p>
+                
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "0.75rem", marginBottom: "0.25rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.75rem", color: "var(--clr-gray-300)" }}>
+                    <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "var(--clr-accent)" }} />
+                    DHI Mortgage Rate-Lock Coordination
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.75rem", color: "var(--clr-gray-300)" }}>
+                    <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "var(--clr-accent)" }} />
+                    Independent Structural Quality Audits
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "0.75rem", color: "var(--clr-gray-300)" }}>
+                    <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "var(--clr-accent)" }} />
+                    Professional Fee Covered by Builder
+                  </div>
+                </div>
+
+                <Link href="/financing" className="btn btn-accent btn-lg" style={{ textAlign: "center", display: "block" }}>
+                  Request Rate Concessions <ArrowRight size={14} style={{ marginLeft: "4px", display: "inline-block", verticalAlign: "middle" }} />
                 </Link>
               </div>
             </div>
@@ -330,50 +452,12 @@ export default function HomePage() {
       <section className="section-luxury-padding">
         <div className="container">
           <div className="section-header section-header-center">
-            <div className="section-index">03 — Client Stories</div>
+            <div className="section-index">04 — Client Stories</div>
             <h2>Buyer Success Stories</h2>
             <p>Read experiences from families who successfully bought D.R. Horton homes with our free representation.</p>
           </div>
 
-          <div className="grid-2">
-            <div className="tile" style={{ textAlign: "left", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-              <div>
-                <div className="star-rating-container" style={{ marginBottom: "1rem" }}>
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} fill="currentColor" />
-                  ))}
-                </div>
-                <p style={{ fontFamily: "var(--font-heading)", fontSize: "1.125rem", fontStyle: "italic", color: "var(--clr-navy)", marginBottom: "1.5rem" }}>
-                  &quot;We were relocating from Chicago and knew nothing about Lake Norman. We almost walked into a D.R. Horton model home without an agent, but thankfully found this portal first. Our specialist helped us negotiate $8,000 in closing costs, attended our pre-drywall walk, and found framing issues the superintendent had missed. Absolute lifesaver!&quot;
-                </p>
-              </div>
-              <div style={{ borderTop: "1px solid var(--clr-gray-200)", paddingTop: "1rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                  <h5 style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", fontWeight: 700 }}>The Henderson Family</h5>
-                  <p style={{ fontSize: "0.75rem", color: "var(--clr-gray-400)" }}>Purchased in Mooresville, NC</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="tile" style={{ textAlign: "left", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-              <div>
-                <div className="star-rating-container" style={{ marginBottom: "1rem" }}>
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={14} fill="currentColor" />
-                  ))}
-                </div>
-                <p style={{ fontFamily: "var(--font-heading)", fontSize: "1.125rem", fontStyle: "italic", color: "var(--clr-navy)", marginBottom: "1.5rem" }}>
-                  &quot;First-time buyer here. I was worried about hidden fees, but the buyer agent services were 100% free! My agent helped me choose the right floor plan at Cardinal Creek in Charlotte and was there to protect me at every single walk. The builder sales rep was nice, but it was clear they worked for the builder. Having my own agent was critical.&quot;
-                </p>
-              </div>
-              <div style={{ borderTop: "1px solid var(--clr-gray-200)", paddingTop: "1rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                  <h5 style={{ fontFamily: "var(--font-body)", fontSize: "0.875rem", fontWeight: 700 }}>Marcus T.</h5>
-                  <p style={{ fontSize: "0.75rem", color: "var(--clr-gray-400)" }}>Purchased in Charlotte, NC</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <TestimonialCarousel3D />
         </div>
       </section>
 
@@ -402,10 +486,6 @@ export default function HomePage() {
 
       {/* ═══ STICKY FLOATING TOUCH-OPTIMIZED MOBILE CTA BAR ═══ */}
       <div className="sticky-bottom-cta">
-        <div className="mobile-cta-text">
-          <h5>DR Horton Specialist</h5>
-          <p>Independent Buyer representation</p>
-        </div>
         <div className="mobile-cta-buttons">
           <a href="tel:8005550199" className="btn btn-accent btn-sm" style={{ padding: "0.5rem 0.875rem" }}>
             <Phone size={14} /> Call Agent
