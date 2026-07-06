@@ -910,31 +910,20 @@ p {
   .mobile-menu-btn { display: flex; }
 }
 
-/* ─── Site Footer ─── */
+/* ─── Site Footer ───
+   The background photo is dimmed by stacking a near-opaque dark gradient
+   directly over it in one `background` declaration (single element, no
+   pseudo-element/absolute-position/z-index stack) — the most compatible
+   cross-browser pattern, and avoids `::before` + overflow:hidden rendering
+   quirks some mobile browsers have with that combination. */
 .site-footer {
   position: relative;
-  background: #0C0C0D;
+  background:
+    linear-gradient(to bottom, rgba(12, 12, 13, 0.985), rgba(12, 12, 13, 0.99)),
+    url('/images/charolate.jpeg') no-repeat center/cover;
   color: var(--clr-slate);
   padding: var(--space-4xl) 0 var(--space-xl);
   border-top: 1px solid rgba(235, 228, 213, 0.08);
-  overflow: hidden;
-}
-
-/* Background photo lives on its own layer with a directly tunable opacity,
-   separate from the solid base — keeps text at full contrast regardless of
-   how dim/visible the photo is. */
-.site-footer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: url('/images/charolate.jpeg') no-repeat center/cover;
-  opacity: 0.04;
-}
-
-.site-footer > * {
-  position: relative;
-  z-index: 1;
 }
 
 .footer-grid {
@@ -2296,6 +2285,14 @@ body::after {
   width: 100%;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  /* iOS/mobile Safari has a long-standing bug where an animated descendant
+     of a `mask-image` element can freeze on the first frame instead of
+     repainting. Forcing this element onto its own GPU compositing layer
+     works around it. */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .marquee-track {
@@ -2303,6 +2300,7 @@ body::after {
   width: max-content;
   animation: marquee-scroll var(--marquee-duration, 36s) linear infinite;
   will-change: transform;
+  -webkit-transform: translateZ(0);
 }
 
 .marquee-row {
@@ -2833,11 +2831,14 @@ body::after {
 /* ═══════════════════════════════════════════════════════════
    COMMUNITY TRIPTYCH — SMOOTH EXPANDING-PANEL CAROUSEL
    ═══════════════════════════════════════════════════════════ */
+.ctri-wrap {
+  margin-bottom: var(--space-3xl);
+}
+
 .ctri {
   display: flex;
   gap: 10px;
   height: min(62vh, 540px);
-  margin-bottom: var(--space-3xl);
 }
 
 .ctri-panel {
@@ -2867,12 +2868,24 @@ body::after {
   }
 }
 
-/* Touch: expansion is driven by the .is-active class (tap to open). */
+/* Touch: no hover-expand — every card already shows its full detail (see
+   the always-on rules below), so tapping anywhere just follows the link. */
 .ctri[data-touch="true"] .ctri-panel {
   flex-grow: 1;
 }
-.ctri[data-touch="true"] .ctri-panel.is-active {
-  flex-grow: 3.6;
+
+/* On touch the full detail is always visible — swiping between full cards
+   already reveals one at a time, so there's no need to gate content behind
+   a tap-to-expand step first. */
+.ctri[data-touch="true"] .ctri-label {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ctri[data-touch="true"] .ctri-detail {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .ctri-media {
@@ -3028,23 +3041,29 @@ body::after {
   color: var(--clr-white);
 }
 
-/* ─── Mobile: vertical accordion (tap to expand) ─── */
+/* ─── Mobile: horizontal swipe carousel ───
+   Native scroll-snap does the work — no JS drag tracking, so it never
+   glitches. Every card shows its full detail immediately (swiping already
+   reveals one card at a time), and a tap anywhere just follows the link. */
 @media (max-width: 768px) {
   .ctri {
-    flex-direction: column;
-    height: auto;
-    gap: 0.75rem;
+    height: min(72vh, 480px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0.25rem 7% 0.25rem 0; /* right padding gives the last card room to center */
+    scroll-padding-left: 0;
+  }
+
+  .ctri::-webkit-scrollbar {
+    display: none;
   }
 
   .ctri-panel {
     flex: none;
-    height: 88px;
-    transition: height 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .ctri[data-touch="true"] .ctri-panel.is-active,
-  .ctri-panel.is-active {
-    height: 360px;
+    width: 86%;
+    scroll-snap-align: center;
   }
 
   .ctri-label-name {
@@ -3059,6 +3078,37 @@ body::after {
 
   .ctri-name {
     white-space: normal;
+  }
+}
+
+/* ─── Position dots — mobile-only, double as jump-to-card controls ─── */
+.ctri-dots {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .ctri-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .ctri-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background: var(--clr-gray-300);
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+
+  .ctri-dot.is-active {
+    background: var(--clr-primary);
+    transform: scale(1.3);
   }
 }
 
