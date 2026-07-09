@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CheckCircle, GraduationCap, Clock, ArrowRight } from "lucide-react";
 import type { City, Community } from "@/data/communities";
 import Breadcrumb from "@/components/Breadcrumb";
+import BrandLockup from "@/components/BrandLockup";
 import QuickFactsBar from "@/components/QuickFactsBar";
 import AmenityGrid from "@/components/AmenityGrid";
 import LeadCaptureForm from "@/components/LeadCaptureForm";
@@ -72,6 +73,11 @@ export default function CommunityPageContent({ city, community }: CommunityPageC
             <Link href="/contact" className="btn btn-white">
               Schedule a Tour
             </Link>
+          </div>
+
+          {/* Compliance: firm identification near the top of every listing page */}
+          <div className="cinema-brand-badge">
+            <BrandLockup variant="hero" />
           </div>
         </div>
       </section>

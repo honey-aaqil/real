@@ -1,5 +1,17 @@
+"use client";
+
 import Link from "next/link";
-import { Home, Phone, Mail, MapPin, ShieldAlert, Award, FileText } from "lucide-react";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { Phone, Mail, MapPin, ShieldAlert, Award, FileText } from "lucide-react";
+import {
+  EqualHousingLogo,
+  FIRM_NAME,
+  AGENT_NAME,
+  AGENT_TITLE,
+  AGENT_LICENSE,
+  FIRM_LICENSE,
+} from "@/components/BrandLockup";
 
 // The 11 North Carolina Markets for local-SEO footprint in the footer
 const allTowns = [
@@ -17,16 +29,28 @@ const allTowns = [
 ];
 
 export default function SiteFooter() {
+  const pathname = usePathname();
+
+  // The pre-launch gate is a bare landing page — no site chrome.
+  if (pathname.startsWith("/coming-soon")) return null;
+
   return (
     <footer className="site-footer" style={{ borderTop: "1px solid rgba(197, 160, 89, 0.15)" }}>
       <div className="footer-grid">
         <div className="footer-brand">
-          <h3 style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--clr-white)", fontFamily: "var(--font-heading)" }}>
-            <Home size={22} className="text-[#C5A059]" />
-            <span>DR Horton <span style={{ color: "var(--clr-accent)" }}>NC</span></span>
-          </h3>
+          {/* Compliance: firm identity leads the footer brand column */}
+          <Image
+            src="/images/brand/southern-homes-logo-darkbg.png"
+            alt={FIRM_NAME}
+            width={168}
+            height={74}
+            style={{ borderRadius: "6px" }}
+          />
+          <p style={{ marginTop: "0.875rem", color: "var(--clr-white)", fontSize: "0.9375rem", fontWeight: 600 }}>
+            {AGENT_NAME}, {AGENT_TITLE} — {FIRM_NAME}
+          </p>
           <p style={{ marginTop: "1rem", color: "var(--clr-gray-400)", fontSize: "0.875rem", lineHeight: "1.7" }}>
-            America&apos;s Largest Builder. Discover new construction homes across North Carolina&apos;s premier locations, blending metropolitan convenience with peaceful Lake Norman living.
+            Discover new construction homes across North Carolina&apos;s premier locations, blending metropolitan convenience with peaceful Lake Norman living.
           </p>
           
           <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginTop: "1.75rem" }}>
@@ -70,10 +94,10 @@ export default function SiteFooter() {
         <div className="footer-col">
           <h4>Buyer Specialist</h4>
           <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8125rem", color: "var(--clr-gray-400)", marginBottom: "0.75rem" }}>
-            <Award size={14} className="text-[#C5A059]" /> Licensed NC Realtor®
+            <Award size={14} className="text-[#C5A059]" /> {AGENT_NAME}, {AGENT_TITLE} · {AGENT_LICENSE}
           </span>
           <span style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.8125rem", color: "var(--clr-gray-400)", marginBottom: "0.75rem" }}>
-            <FileText size={14} className="text-[#C5A059]" /> DHI Mortgage Partner
+            <FileText size={14} className="text-[#C5A059]" /> {FIRM_NAME} · {FIRM_LICENSE}
           </span>
           <p style={{ fontSize: "0.75rem", color: "var(--clr-gray-400)", lineHeight: "1.5", marginTop: "0.5rem" }}>
             Providing independent representation to new home buyers. 100% free structural audits, upgrade negotiations, and contract advocacy.
@@ -82,14 +106,29 @@ export default function SiteFooter() {
       </div>
 
       <div className="footer-bottom" style={{ borderTop: "1px solid rgba(255,255,255,0.06)", marginTop: "3.5rem" }}>
-        <p style={{ color: "var(--clr-gray-400)", fontSize: "0.75rem" }}>
-          © {new Date().getFullYear()} North Carolina New Construction Buyer Portal. All rights reserved. Prices, plans, elevations, incentives and community features subject to change.
+        {/* ─── Full legal disclosure block ─── */}
+        <div className="footer-legal">
+          <div className="footer-legal-marks">
+            <span className="footer-eho" title="Equal Housing Opportunity">
+              <EqualHousingLogo size={34} />
+            </span>
+            <span style={{ fontSize: "0.6875rem", color: "var(--clr-gray-400)", lineHeight: "1.5", maxWidth: "560px" }}>
+              {AGENT_NAME}, {AGENT_TITLE} — {FIRM_NAME}. {AGENT_LICENSE} · {FIRM_LICENSE}.
+              {" "}{AGENT_NAME} is a member of the National Association of REALTORS®.
+              We are pledged to the letter and spirit of U.S. policy for the achievement of
+              equal housing opportunity throughout the Nation.
+            </span>
+          </div>
+        </div>
+
+        <p style={{ color: "var(--clr-gray-400)", fontSize: "0.75rem", marginTop: "1rem" }}>
+          © {new Date().getFullYear()} {AGENT_NAME} · {FIRM_NAME}. All rights reserved. Prices, plans, elevations, incentives and community features subject to change.
         </p>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "1rem", borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: "1rem" }}>
           <p style={{ display: "flex", alignItems: "start", gap: "0.5rem", color: "var(--clr-gray-400)", fontSize: "0.7188rem", lineHeight: "1.5" }}>
             <ShieldAlert size={14} className="text-[#C5A059] flex-shrink-0" style={{ marginTop: "2px" }} />
             <span>
-              <strong>Brokerage Compliance Disclaimer:</strong> This portal is operated by a licensed, independent North Carolina real estate agent specializing in new construction buyer advocacy. It is not affiliated with, sponsored by, or endorsed by D.R. Horton, Inc. or DHI Mortgage. All D.R. Horton logos, names, and trademark materials belong strictly to their respective corporate owners. We represent buyers exclusively to protect their interests during the build process; the builder pays our professional fee.
+              <strong>Brokerage Compliance Disclaimer:</strong> This portal is operated by {AGENT_NAME}, {AGENT_TITLE} ({AGENT_LICENSE}), a licensed North Carolina real estate agent with {FIRM_NAME} ({FIRM_LICENSE}), specializing in new construction buyer advocacy. It is not affiliated with, sponsored by, or endorsed by D.R. Horton, Inc. or DHI Mortgage. All D.R. Horton logos, names, and trademark materials belong strictly to their respective corporate owners. We represent buyers exclusively to protect their interests during the build process; the builder pays our professional fee.
             </span>
           </p>
         </div>

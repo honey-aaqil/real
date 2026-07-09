@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Bed, Bath, Ruler, ArrowRight } from "lucide-react";
+import BrandLockup from "@/components/BrandLockup";
 import type { Community } from "@/data/communities";
 
 interface CommunityCardProps {
@@ -77,6 +78,9 @@ export default function CommunityCard({ community, citySlug, image, priority }: 
         </div>
 
         <p className="card-hook">{community.hookLine}</p>
+
+        {/* Compliance: firm attribution on the card itself, not just detail pages */}
+        <BrandLockup variant="card" />
 
         <span className="btn btn-primary btn-sm btn-full">
           View Community <ArrowRight size={14} />

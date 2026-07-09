@@ -20,6 +20,7 @@ import SchemaMarkup from "@/components/SchemaMarkup";
 import Marquee from "@/components/motion/Marquee";
 import CuriosityGapApertureLoop from "@/components/motion/CuriosityGapApertureLoop";
 import TestimonialCarousel3D from "@/components/TestimonialCarousel3D";
+import BrandLockup from "@/components/BrandLockup";
 import CommunityTriptych from "@/components/CommunityTriptych";
 import { getFeaturedCommunities } from "@/data/communities";
 
@@ -172,6 +173,11 @@ export default function HomePage() {
             <Link href="/why-dr-horton" className="btn btn-outline btn-lg">
               Why Use a Buyer Agent? <ArrowRight size={18} />
             </Link>
+          </div>
+
+          {/* Compliance: firm identification within the first viewport */}
+          <div className="cinema-brand-badge">
+            <BrandLockup variant="hero" />
           </div>
         </div>
 

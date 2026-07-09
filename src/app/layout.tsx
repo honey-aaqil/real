@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Geist } from "next/font/google";
-import { MessageCircle } from "lucide-react";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import MotionProvider from "@/components/motion/MotionProvider";
@@ -71,15 +71,7 @@ export default function RootLayout({
         </MotionProvider>
 
         {/* Global Mobile-First Floating WhatsApp Widget (fixed — outside the wrapper) */}
-        <a
-          href="https://wa.me/18005550199?text=Hi!%20I'm%20interested%20in%20D.R.%20Horton%20NC%20New%20Construction%20Homes."
-          target="_blank"
-          rel="noopener noreferrer"
-          className="floating-whatsapp-widget"
-          aria-label="Chat with Specialist"
-        >
-          <MessageCircle size={26} fill="currentColor" />
-        </a>
+        <FloatingWhatsApp />
       </body>
     </html>
   );

@@ -22,6 +22,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Bed, Bath, Ruler, ArrowRight } from "lucide-react";
+import BrandLockup from "@/components/BrandLockup";
 import type { Community } from "@/data/communities";
 
 interface CommunityTriptychProps {
@@ -129,6 +130,8 @@ export default function CommunityTriptych({ items, images }: CommunityTriptychPr
                   </span>
                 </span>
                 <span className="ctri-hook">{community.hookLine}</span>
+                {/* Compliance: firm attribution rendered on the card itself */}
+                <BrandLockup variant="card" />
                 <span className="ctri-cta">
                   View Community <ArrowRight size={16} />
                 </span>

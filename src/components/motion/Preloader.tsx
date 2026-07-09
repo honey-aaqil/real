@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -14,6 +15,7 @@ gsap.registerPlugin(useGSAP);
 export default function Preloader() {
   const [done, setDone] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useGSAP(
     () => {
@@ -75,6 +77,9 @@ export default function Preloader() {
     },
     { scope: rootRef }
   );
+
+  // The pre-launch gate gets no brand intro — it must render instantly.
+  if (pathname.startsWith("/coming-soon")) return null;
 
   if (done) return null;
 

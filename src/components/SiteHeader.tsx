@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Home, Menu, X, Phone, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, ChevronDown } from "lucide-react";
+import BrandLockup from "@/components/BrandLockup";
 
 // The 11 North Carolina Markets in a unified flat array
 const towns = [
@@ -21,7 +22,7 @@ const towns = [
 ];
 
 const navLinks = [
-  { href: "/new-homes", label: "Communities" },
+  { href: "/new-homes", label: "Search Homes" },
   { href: "/relocating-to-north-carolina", label: "Buyer's Guide" },
   { href: "/financing", label: "Incentives" },
   { href: "/why-dr-horton", label: "Why DR Horton" },
@@ -48,17 +49,17 @@ export default function SiteHeader() {
     return () => clearTimeout(timer);
   }, [pathname]);
 
+  // The pre-launch gate is a bare landing page — no site chrome.
+  if (pathname.startsWith("/coming-soon")) return null;
+
   return (
     <>
       <header className={`site-header${scrolled ? " scrolled" : ""}`}>
         <div className="header-inner">
+          {/* Compliance: firm-first lockup — Southern Homes of the Carolinas Inc
+              rides ahead of the agent brand on every page (no blind ads). */}
           <Link href="/" className="header-brand">
-            <span className="header-brand-icon">
-              <Home size={18} />
-            </span>
-            <span>
-              DR Horton <span style={{ color: "var(--clr-accent)", fontWeight: 500 }}>NC</span>
-            </span>
+            <BrandLockup variant="header" />
           </Link>
 
           <nav className="header-nav">
